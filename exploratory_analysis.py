@@ -14,20 +14,21 @@
 # ---
 
 # %% [markdown] {"pycharm": {}}
-# # Exploratory Analysis
-# Looking at Vaccination rates per city and county cross-referenced with demographic data to look for any correlations.
+# # Data Exploration and Clean up
+# Looking at Vaccination rates per county and county cross-referenced with demographic data to look for any correlations.
 # ## Exploration Questions
-# Look at the distribution of vaccination rates accross counties.
+# What does the vaccination rate look like accross California
 #
-# Look at how the following correlate with vaccination rates accross counties.
+# What relationship (if any) do the folowing variables have on the vaccination rates accross countries.
 # - Median Income
-# - Parent Education Level
-# - Median House Price
+# - County Education Level
+# - Unemployment Level
+# - Percent Uninsured
 # - County Population
 #
 # ## Data being used
 # - Kindergarten Immunization records from Kaggle [link](https://www.kaggle.com/broach/california-kindergarten-immunization-rates)
-# - CA census estimates currated by the state [link](http://www.dof.ca.gov/Forecasting/Demographics/Estimates/E-5/)
+# - CA census estimates currated by the state [link](http://www.dof.ca.gov/Reports/Demographic_Reports/American_Community_Survey/#ACS2017x5)
 
 # %% [markdown] {"pycharm": {}}
 # # Imports
@@ -201,12 +202,18 @@ merged_df.info()
 merged_df.describe()
 
 # %%
-# Look at the least vaccinated counties
-merged_df.head()
-
-# %%
 # Some visualizations of the vacination rates
 sns.boxplot(x='Percent Vaccinated', data=merged_df)
+
+# %%
+# Some Descriptive data and Probabability density function, looking for outliers
+num_of_bins = 20
+print(merged_df['Percent Vaccinated'].describe())
+sns.distplot(merged_df['Percent Vaccinated'], bins=num_of_bins)
+
+# %%
+# Look at the least vaccinated counties
+merged_df.head()
 
 # %%
 fig, ax = plt.subplots(figsize=(10,8))
@@ -215,10 +222,8 @@ ax.tick_params(rotation=90)
 ax.set_title('County Populations')
 fig.tight_layout()
 
-# %%
-# Probabability density function, looking for outliers
-num_of_bins = 20
-sns.distplot(merged_df['Percent Vaccinated'], bins=num_of_bins)
+# %% [markdown]
+# ## Visualizations Explorations
 
 # %%
 # Look at bubble plots for different independent variables
@@ -229,7 +234,7 @@ for idx in range(0, len(ind_cols), 4):
     sns.pairplot(merged_df, y_vars='Percent Vaccinated', x_vars=ind_cols[idx: idx+4], kind='reg',height=5)
 
 # %% [markdown]
-# ## Education
+# ## Education Analysis
 
 # %%
 # Look at linear regression for the High Schol or Higher group
@@ -386,29 +391,6 @@ predication = model.predict(X)
 print_model = model.summary()
 print(print_model)
 
-
-# %% [markdown]
-# ## T-test
-# Let's run a t-test for the No High School Diploma treatment
-
-# %%
-merged_df.plot(x='No High School Diploma', y='Percent Vaccinated', kind='hist')
-
-# %%
-median_no_diploma = merged_df['No High School Diploma'].median()
-median_no_diploma
-
-# %%
-sns.boxplot(x='No High School Diploma', data=merged_df.sort_values('No High School Diploma'))
-
-# %%
-treatment = merged_df[merged_df['No High School Diploma'] > median_no_diploma]
-stats.ttest_ind(treatment['Percent Vaccinated'], merged_df['Percent Vaccinated'], equal_var=False)
-
-# %% [markdown]
-# #### Findings
-# - There is a significant difference in vaccination rate between the population with more than 14.35% of their population having less than a High School Diploma and the overall sample.
-# - This implies that the percentage of the population that has No High School Diploma is an indicator of the vaccination rate.
 
 # %% [markdown]
 # # Findings and Next Steps
