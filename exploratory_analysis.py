@@ -118,7 +118,7 @@ education_df = pd.read_excel('data/Web_ACS2014_10_Educ.xlsx', sheet_name='Educat
 
 # Clean up the cols
 education_df = education_df.rename(columns={'Unnamed: 0_level_0': 'Geography'})
-education_df = education_df[["Geography", "Percent Less than 9th grade", "Percent 9th to 12th grade, no diploma", "Percent High school graduate (includes equivalency)", 
+education_df = education_df[["Geography", "Percent Less than 9th grade", "Percent 9th to 12th grade, no diploma", "Percent High school graduate (includes equivalency)",
                              "Percent Bachelor's degree", "Percent Graduate or professional degree",
                              "Percent high school graduate or higher", "Percent bachelor's degree or higher"]]
 education_df = education_df.drop(columns=['Margin of Error', 'Margin of Error.1', 'Summary Level', 'County', 'Place'], level=1)
@@ -149,7 +149,7 @@ health_ins_df.shape
 # %% {"pycharm": {}}
 # Import Income Data
 income_df = pd.read_excel('data/Web_ACS2014_10_Inc-Pov-Emp.xlsx', sheet_name='Income', header=[3,4])
-income_df = income_df[[('Unnamed: 0_level_0', 'Geography'), 
+income_df = income_df[[('Unnamed: 0_level_0', 'Geography'),
                                      ('Median household income (dollars)', 'Estimate'),
                                      ('Mean household income (dollars)', 'Estimate'),
                                      ('Per capita income (dollars)', 'Estimate')]]
@@ -400,6 +400,5 @@ print(print_model)
 # - Employment Rate
 # - Insured Rate
 #
-# Education seems to have some correlation with the uninsured rate. Interestingly though the only significant indicator seems to be the percent of the population with *No High School Diploma*. 
+# Education seems to have some correlation with the uninsured rate. Interestingly though the only significant indicator seems to be the percent of the population with *No High School Diploma*.
 #
-# The 
